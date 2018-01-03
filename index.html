@@ -15,28 +15,56 @@
       function initMap() {
       	var direccion = {lat: 17.158611, lng: -100.639722};
       	var options = {
-      		zoom: 12,
+      		zoom: 10,
       		center: direccion
       	}
      
         var map = new google.maps.Map(document.getElementById('map'), options);
+        //arreglo de marcadores 
 
-        /*
 
-        var marker = new google.maps.Marker({
-	        position: direccion,
+        //Donde des un click aparece el icono 
+        google.maps.event.addListener(map, 'click', function(event){
+        	addMarker({coords:event.latLng});
+        });
+
+        var markers =[
+        	{
+        		coords:{lat: 17.158611, lng: -100.639722},
+    			content:'<h2>Teti Gro.<h2>',
+    			iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+    		},
+    		{
+    			coords:{lat: 17.21650719358868, lng: -100.64566799700572},
+    			content:'<h2> Tecpan de Galeana</h2>'
+    		}
+
+        ];
+        //LOP RECORRIDO DEL ARREGLO
+        for(var i = 0; i < markers.length; i++){
+        	addMarker(markers[i]);
+        }
+    	//Add marker function 
+    	function addMarker(props){
+    		var marker = new google.maps.Marker({
+	        position: props.coords,
 	        map:map,
-	        icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+	        //icon: props.iconImage
     	});
+    		//Si en el arreglo hay imagen muestrala
+    		if(props.iconImage){
+    			marker.setIcon(props.iconImage);
+    		}
+    		if(props.content){
+    			var infoWindow =new google.maps.InfoWindow({
+		    		content:props.content
+		    	});
 
-    	var infoWindow =new google.maps.InfoWindow({
-    		content:'<h1>Teti Gro.</h1>'
-    	});
-
-    	marker.addListener('click', function(){
-    		infoWindow.open(map, marker);
-    	});*/
-
+		    	marker.addListener('click', function(){
+		    		infoWindow.open(map, marker);
+		    	});
+    		}
+    	}
       }
     </script>
     <script async defer
